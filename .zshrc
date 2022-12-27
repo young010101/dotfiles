@@ -1,16 +1,17 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=$HOME/opt/nvim-linux64/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+# export PATH=$HOME/opt/nvim-linux64/bin:$PATH
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+#ZSH_THEME="robbyrussell"
 # theme jonathan
-ZSH_THEME="robbyrussell"
+ZSH_THEME="avit"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -72,7 +73,13 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git
+    # other plugins...
+    zsh-autosuggestions
+    web-search
+    aliases
+    sudo
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -101,4 +108,37 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias vi="nvim"
+alias wq='wmctrl -ir `xdotool getwindowfocus` -b toggle,fullscreen'
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/natr/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/natr/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/natr/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/natr/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+conda activate pt
+
+#YC
+export EDITOR='nvim'
+alias l='ls -lFh'
+alias la='ls -lAFh'
+alias lr='ls -tRFh'
+alias lt='ls -ltFh'
+alias ll='ls -l'
+alias ldot='ls -ld .*'
+alias lS='ls -1FSsh'
+alias lart='ls -1Fcart'
+alias lrt='ls -1Fcrt'
+
+alias zshrc='vi ~/.zshrc'
+alias i3config='vi ~/.config/i3/config'
+alias tmuxconf='vi ~/.tmux.conf'
+
