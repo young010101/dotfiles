@@ -1,0 +1,108 @@
+Xft.antialias:	1
+Xft.hinting:	1
+Xft.autohint:	0
+Xft.hintstyle:	hintslight
+Xft.rgba:	rgb
+Xft.lcdfilter:	lcddefault
+xft:Source Han Sans CN:size=9
+
+Xft.dpi:   100
+
+dmenu.selbackground: #96CDFB
+dmenu.selforeground: #D9E0EE
+
+*background: #1E1E2E
+*foreground: #D9E0EE
+
+! Gray
+*color0: #6E6C7E
+*color8: #988BA2
+
+! Red
+*color1: #F28FAD
+*color9: #F28FAD
+
+! Green
+*color2: #ABE9B3
+*color10: #ABE9B3
+
+! Yellow
+*color3: #FAE3B0
+*color11:  #FAE3B0
+
+! Blue
+*color4: #96CDFB
+*color12: #96CDFB
+
+! Maguve
+*color5: #DDB6F2
+*color13: #DDB6F2
+
+! Pink
+*color6: #F5C2E7
+*color14: #F5C2E7
+
+! Whites
+*color7: #C3BAC6
+*color15: #D9E0EE
+
+! URxvt.font: xft:Hack Nerd Font Mono:size=13, xft:Noto Color Emoji:style=regular:size=3, xft:WenQuanYi Zen Hei Mono:size=13
+! URxvt.scrollBar: false
+! *foreground_bold: #a8a19f
+! URxvt*background: #1b1b1b
+! !URxvt.background: [70]#111111
+! URxvt*foreground: #cccaca
+! URxvt.letterSpace: -1
+! URxvt.lineSpace: 3
+!
+! !Black
+! URxvt*color0: #222222
+! URxvt*color8: #5b595a
+! !Red
+! URxvt*color1: #664742
+! URxvt*color9: #664742
+! !Green
+! URxvt*color2: #A5AF86
+! URxvt*color10: #A5AF86
+! !Yellow
+! URxvt*color3: #F7E7BD
+! URxvt*color11: #F7E7BD
+! !Blue
+! URxvt*color4: #6e686f
+! URxvt*color12: #6e686f
+! !Magenta
+! URxvt*color5: #966E6E
+! URxvt*color13: #B09A91
+! !Cyan
+! URxvt*color6: #849492
+! URxvt*color14: #849492
+! !White
+! URxvt*color7: #a49c9c
+! URxvt*color15: #e9e6e6
+!
+! URxvt.iso14755: false
+! URxvt.iso14755_52: false
+! URxvt.perl-ext: default,url-select
+! URxvt.perl-ext-common: default,selection-to-clipboard, resize-font, matcher,keyboard-select
+! URxvt.clipboard.autocopy: true
+! URxvt.keysym.M-c: perl:clipboard:copy
+! URxvt.keysym.M-v: perl:clipboard:paste
+! URxvt.keysym.M-Escape: perl:keyboard-select:activate
+! URxvt.keysym.M-s: perl:keyboard-select:search
+! !URxvt.perl-ext-common: default, fullscreen, matcher, resize-font, url-select
+! !URxvt.keysym.F11: perl:fullscreen:switch
+! !URxvt.colorUL: #4682B4
+! !URxvt.keysym.M-u: perl:url-select:select_next
+! URxvt.url-select.launcher: /usr/bin/xdg-open
+! URxvt.matcher.button: 1
+! URxvt.keysym.C-Delete: perl:matcher:last
+! URxvt.keysym.M-Delete: perl:matcher:list
+! !URxvt.matcher.rend.0: Uline Bold fg5
+! URxvt.colorUL: #4682B4
+! !URxvt.url-select.underline: true
+! !URxvt.keysym.M-Escape: perl:keyboard-select:activate
+! URxvt.keysym.C-Down:  resize-font:smaller
+! URxvt.keysym.C-Up:    resize-font:bigger
+!
+! URxvt.keysym.M-u: perl:url-select:select_next
+! URxvt.url-select.underline: true

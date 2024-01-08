@@ -3,3 +3,13 @@
 # Enforce SSH
 [url "ssh://git@github.com/"]
   insteadOf = https://github.com/
+[core]
+	quotepath = false
+[user]
+	name = natr
+	email = yc5@tju.edu.cn
+[safe]
+	; directory = /home/natr/cyangdata/repos/llama.cpp
+[alias]
+	lol = log --graph --oneline --decorate --color --all
+    st = status
