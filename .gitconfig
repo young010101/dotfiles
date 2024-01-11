@@ -12,4 +12,10 @@
 	; directory = /home/natr/cyangdata/repos/llama.cpp
 [alias]
 	lol = log --graph --oneline --decorate --color --all
-    st = status
+	st = status
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	co = checkout
+	ci = commit
+	br = branch
+	unstage = reset HEAD
+	last = log -1
