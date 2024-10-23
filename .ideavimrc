@@ -1,0 +1,92 @@
+" .ideavimrc is a configuration file for IdeaVim plugin. It uses
+"   the same commands as the original .vimrc configuration.
+" You can find a list of commands here: https://jb.gg/h38q75
+" Find more examples here: https://jb.gg/share-ideavimrc
+
+
+"" -- Suggested options --
+" Show a few lines of context around the cursor. Note that this makes the
+" text scroll if you mouse-click near the start or end of the window.
+set scrolloff=5
+
+" Do incremental searching.
+set incsearch
+
+set ideajoin
+
+" Don't use Ex mode, use Q for formatting.
+map Q gq
+
+" --- Enable IdeaVim plugins https://jb.gg/ideavim-plugins
+
+" Highlight copied text
+Plug 'machakann/vim-highlightedyank'
+" Commentary plugin
+Plug 'tpope/vim-commentary'
+
+
+"" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
+"" Map \r to the Reformat Code action
+"map \r <Action>(ReformatCode)
+
+"" Map <leader>d to start debug
+map <leader>d <Action>(Debug)
+
+"" Map \b to toggle the breakpoint on the current line
+"map \b <Action>(ToggleLineBreakpoint)
+
+" 设置 leader 键为空格
+let mapleader = " "
+"
+" 设定键盘输入模式
+set keymodel=startsel,stopsel
+
+" 取消搜索时的高亮
+nnoremap <silent> <leader>h :nohlsearch<CR>
+
+" 快速保存
+nnoremap <C-s> :w<CR>
+
+" 分屏切换
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" 退出插入模式
+inoremap jk <Esc>
+
+" 行末行首移动
+nnoremap H ^
+nnoremap L $
+
+" 快速注释
+nmap <leader>c :action CommentByLineComment<CR>
+
+" 复制到系统剪贴板
+vnoremap <C-c> "+y
+
+" 移动到下一个/上一个更改的位置
+nmap <leader>n :action NextChange<CR>
+nmap <leader>p :action PreviousChange<CR>
+
+" IDEA 自带的操作映射到 Vim 命令
+nmap <leader>f :action Find<CR>
+nmap <leader>r :action Replace<CR>
+nmap <leader>t :action ReformatCode<CR>
+
+nnoremap <leader>sv :action SplitVertically<CR>
+nnoremap <leader>sh :action SplitHorizontally<CR>
+nnoremap <leader>sc :action CloseActiveTab<CR>
+
+" 在正常模式下按 Alt+n 来添加下一个相同的光标
+nmap <A-n> :action EditorSelectNextOccurrence<CR>
+
+" 禁用鼠标
+set mouse=
+
+" 折叠代码
+nnoremap <leader>z :action EditorToggleFolding<CR>
+
+" 展开所有折叠
+nnoremap <leader>za :action ExpandAllRegions<CR>
