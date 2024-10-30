@@ -11,20 +11,20 @@ fi
 # User specific aliases and functions
 
 # for anaconda
-# anaconda_PATH=/home/centos/anaconda3/bin
-# conda_base="source ${anaconda_PATH}/activate"
+anaconda_PATH=/home/centos/anaconda3/bin
+conda_base="source ${anaconda_PATH}/activate"
 # source ${anaconda_PATH}/activate
 # conda activate pt
 # export PATH=/opt/anaconda3-2021.11/bin/:$PATH
 
 # for freesurfer
-export FREESURFER_HOME=/usr/local/freesurfer/7.3.2-1
-export SUBJECTS_DIR=$FREESURFER_HOME/subjects
-source $FREESURFER_HOME/SetUpFreeSurfer.sh
+# export FREESURFER_HOME=/usr/local/freesurfer/7.3.2-1
+# export SUBJECTS_DIR=$FREESURFER_HOME/subjects
+# source $FREESURFER_HOME/SetUpFreeSurfer.sh
 
 # for fsl
-export FSLDIR=/opt/fsl
-source $FSLDIR/etc/fslconf/fsl.sh 
+# export FSLDIR=/opt/fsl
+# source $FSLDIR/etc/fslconf/fsl.sh 
 
 # for matlab
 export Matlab_PATH=/opt/R2020a/bin
@@ -58,48 +58,66 @@ export my_local_PATH=$data_PATH/usr/local
 export PATH=$my_bin_PATH:$PATH
 export PATH=$my_local_PATH:$PATH
 export PATH=$my_local_PATH/bin:$PATH
-export PYTHONPATH=$my_python_PATH
+export PYTHONPATH="$PYTHONPATH:$my_python_PATH"
 # export DISPLAY="121.0.0.1:10.0"
 
 # GPU caheck
 alias nv="nvidia-smi"
 alias wnv="watch -n 0.5 -d nvidia-smi"
 
-alias vi=nvim.appimage
+#alias vi=nvim.appimage
 alias cdcy="cd $data_PATH"
 alias bashrc="vi ~/.bashrc"
 alias sbashrc="source ~/.bashrc"
 
-# # >>> conda initialize >>>
-# # !! Contents within this block are managed by 'conda init' !!
-# __conda_setup="$('$my_bin_PATH/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-# if [ $? -eq 0 ]; then
-#     eval "$__conda_setup"
-# else
-#     if [ -f "$my_bin_PATH/anaconda3/etc/profile.d/conda.sh" ]; then
-#         . "$my_bin_PATH/anaconda3/etc/profile.d/conda.sh"
-#     else
-#         export PATH="$my_bin_PATH/anaconda3/bin:$PATH"
-#     fi
-# fi
-# unset __conda_setup
-# # <<< conda initialize <<<
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/cyang/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/cyang/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/cyang/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/cyang/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-conda activate pt
 
 set -o vi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+#export LANG=en_US.UTF-8
+#export LC_ALL=en_US.UTF-8
+export HF_ENDPOINT=https://hf-mirror.com
+export PATH="$PATH:/opt/nvim/"
+
+function taocl() {
+  # 定义本地和远程README.md的路径
+  local local_readme="$data_PATH/repos/the-art-of-command-line/README.md"
+  local remote_readme="https://raw.githubusercontent.com/jlevy/the-art-of-command-line/master/README.md"
+
+  # 检查是否传入 -r 选项来使用远程文件
+  if [[ "$1" == "-r" ]]; then
+    # 从远程获取 README.md
+    content=$(curl -s "$remote_readme")
+  else
+    # 从本地获取 README.md（如果文件不存在则报错）
+    if [[ -f "$local_readme" ]]; then
+      content=$(cat "$local_readme")
+    else
+      echo "Error: Local README.md not found at $local_readme" >&2
+      return 1
+    fi
+  fi
+
+  # 处理内容
+  # curl -s https://raw.githubusercontent.com/jlevy/the-art-of-command-line/master/README.md |
+  echo "$content" |
+    sed '/cowsay[.]png/d' |
+    pandoc -f markdown -t html |
+    xmlstarlet fo --html --dropdtd |
+    xmlstarlet sel -t -v "(html/body/ul/li[count(p)>0])[$RANDOM mod last()+1]" |
+    xmlstarlet unesc | fmt -80 | iconv -t US
+}
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+ranger_cd() {
+    local temp_file="$(mktemp)"
+    ranger --choosedir="$temp_file" "$@"
+    if [ -f "$temp_file" ] && [ "$(cat "$temp_file")" != "$(pwd)" ]; then
+        cd "$(cat "$temp_file")"
+    fi
+    rm -f "$temp_file"
+}
+
