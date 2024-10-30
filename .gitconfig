@@ -20,12 +20,15 @@
 	br = branch
 	unstage = reset HEAD
 	last = log -1
+	ac = !git add -A && git commit -m
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 [credential]
-	helper = store
+	helper = cache
 [commit]
 	template = /home/cyang/.gitmessage.txt
+[color]
+	ui = auto
