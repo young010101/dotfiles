@@ -27,3 +27,5 @@
 	process = git-lfs filter-process
 [credential]
 	helper = store
+[commit]
+	template = /home/cyang/.gitmessage.txt
