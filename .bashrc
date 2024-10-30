@@ -121,3 +121,8 @@ ranger_cd() {
     rm -f "$temp_file"
 }
 
+if [ "$PWD" = "$HOME" ]; then
+    cd $data_PATH
+fi
+
+export PATH=$PATH:$data_PATH/bin/async-profiler

@@ -24,7 +24,8 @@ OLD_IP=$(cat "$IP_FILE")
 if [ "$CURRENT_IP" != "$OLD_IP" ]; then
     # 如果 IP 发生变化，则更新文件并发送通知
     echo "$CURRENT_IP" > "$IP_FILE"
-    echo -e "Subject: IP Address Changed\n\nYour IP address has changed to: $CURRENT_IP" | sendmail -v yc5@tju.edu.cn
+    #echo -e "Subject: IP Address Changed\n\nYour IP address has changed to: $CURRENT_IP" | sendmail -v yc5@tju.edu.cn
+    echo -e "Subject: IP Address Changed\n\nYour IP address has changed to: $CURRENT_IP" | sendmail yc5@tju.edu.cn
     echo "IP address changed. Notification sent."
 else
     echo "No IP change detected."
