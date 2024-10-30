@@ -5,8 +5,9 @@
   insteadOf = https://github.com/
 [core]
 	quotepath = false
+	pager = diff-so-fancy | less --tabs=4 -RFX
 [user]
-	name = natr
+	name = co
 	email = yc5@tju.edu.cn
 [safe]
 	; directory = /home/natr/cyangdata/repos/llama.cpp
@@ -19,3 +20,10 @@
 	br = branch
 	unstage = reset HEAD
 	last = log -1
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+[credential]
+	helper = store
