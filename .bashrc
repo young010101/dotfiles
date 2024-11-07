@@ -1,4 +1,5 @@
 # .bashrc
+# .bashrc
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
@@ -11,8 +12,8 @@ fi
 # User specific aliases and functions
 
 # for anaconda
-anaconda_PATH=/home/centos/anaconda3/bin
-conda_base="source ${anaconda_PATH}/activate"
+#anaconda_PATH=/home/centos/anaconda3/bin
+#conda_base="source ${anaconda_PATH}/activate"
 # source ${anaconda_PATH}/activate
 # conda activate pt
 # export PATH=/opt/anaconda3-2021.11/bin/:$PATH
@@ -28,6 +29,7 @@ conda_base="source ${anaconda_PATH}/activate"
 
 # for matlab
 export Matlab_PATH=/opt/R2020a/bin
+export Matlab_PATH=/data/users/cyang/MATLAB/R2024a/bin
 export PATH=${Matlab_PATH}:$PATH
 
 # for mricron
@@ -51,6 +53,9 @@ export MANPATH=/opt/camino/man:$MANPATH
 export PATH=${CAMINO_PATH}:$PATH
 
 # for cyang
+. "$HOME/.cargo/env"
+export EDITOR=vim
+export XDG_CONFIG_HOME=$HOME/.config
 export data_PATH=/data/users/cyang
 export my_python_PATH=$data_PATH/bin/python
 export my_bin_PATH=$data_PATH/bin
@@ -59,7 +64,22 @@ export PATH=$my_bin_PATH:$PATH
 export PATH=$my_local_PATH:$PATH
 export PATH=$my_local_PATH/bin:$PATH
 export PYTHONPATH="$PYTHONPATH:$my_python_PATH"
+export XAI_API_KEY="xai-pgboaiRfBgq40IPxMfQE18EqJcG1aR2BuEhILNM3iO2R8r9TsoT6NsGaJhtFoIfalGvEWSdHIekZD1g2"
 # export DISPLAY="121.0.0.1:10.0"
+#export PATH=$data_PATH/bin/gcc-9.3.0/bin:$PATH
+export PATH=/data/users/cyang/bin/gcc-11.3/bin:$PATH
+export LD_LIBRARY_PATH=/data/users/cyang/bin/gcc-11.3/lib64:$LD_LIBRARY_PATH
+
+export PATH="$HOME/.local/bin:$PATH"
+
+export PKG_CONFIG_PATH=$data_PATH/local/lib64/pkgconfig
+export LD_LIBRARY_PATH=$data_PATH/local/lib64:$LD_LIBRARY_PATH
+export PKG_CONFIG_PATH=$data_PATH/local/lib/pkgconfig:$PKG_CONFIG_PATH
+export LD_LIBRARY_PATH=$data_PATH/local/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/data/users/cyang/anaconda3/envs/sga/lib:$LD_LIBRARY_PATH
+export PATH=$data_PATH/local/bin:$PATH
+eval "$(starship init bash)"
+
 
 # GPU caheck
 alias nv="nvidia-smi"
@@ -126,3 +146,19 @@ if [ "$PWD" = "$HOME" ]; then
 fi
 
 export PATH=$PATH:$data_PATH/bin/async-profiler
+
+#source $data_PATH/repos/dotfiles/scripts/conda_source
+
+# >>> mamba initialize >>>
+# !! Contents within this block are managed by 'mamba shell init' !!
+export MAMBA_EXE='/data/users/cyang/anaconda3/bin/mamba';
+export MAMBA_ROOT_PREFIX='/data/users/cyang/anaconda3';
+__mamba_setup="$("$MAMBA_EXE" shell hook --shell bash --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__mamba_setup"
+else
+    alias mamba="$MAMBA_EXE"  # Fallback on help from mamba activate
+fi
+unset __mamba_setup
+# <<< mamba initialize <<<
+

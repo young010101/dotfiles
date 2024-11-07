@@ -61,3 +61,69 @@ set undodir=~/.vim/undodir
 
 " ## 视觉美化
 " -----------
+" 配色方案
+colorscheme desert
+
+" 启用 256 色模式
+set t_Co=256
+
+" 高亮当前行
+set cursorline
+
+" 高亮搜索时的匹配
+set incsearch
+set hlsearch
+
+" 自定义状态栏
+set statusline=%F%m%r%h%w\ [%{&ff}]\ [%Y]\ [%l/%L]\ [%p%%]
+
+" ## 键盘映射
+
+" Leader 键设置为空格
+let mapleader = " "
+
+" 快速保存
+nnoremap <leader>w :w<CR>
+
+" 快速退出
+nnoremap <leader>q :q<CR>
+
+" 快速切换窗口
+nnoremap <leader>h <C-w>h
+nnoremap <leader>j <C-w>j
+nnoremap <leader>k <C-w>k
+nnoremap <leader>l <C-w>l
+
+" 在可视模式下按Tab键缩进代码块
+vnoremap < <gv
+vnoremap > >gv
+
+" 取消高亮搜索
+nnoremap <leader><space> :nohlsearch<CR>
+
+" 用 jk 作为快速进入普通模式的映射（从插入模式返回）
+inoremap jk <ESC>
+
+" ## 配置插件
+" ---------------------------
+" vim-plug 插件开始区域
+call plug#begin()
+"
+" 文件浏览器插件 NERDTree
+Plug 'preservim/nerdtree' 
+Plug 'junegunn/fzf', { 'dir': '~/.fzf' }
+call plug#end()
+
+" ## 插件配置示例
+" -----------
+" 启动 NERDTree 并绑定快捷键
+nnoremap <leader>n :NERDTreeToggle<CR>
+
+" 配置 lightline 主题
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ }
+
+" coc.nvim 配置
+" 使用 <Tab> 补全
+inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
