@@ -9,18 +9,13 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export data_PATH="/data/users/cyang"
 
 # Base paths
-export my_bin_PATH="$data_PATH/bin"
-export my_local_PATH="$data_PATH/local"
 export my_python_PATH="$data_PATH/bin/python"
 
 # ===== Path Configuration =====
 paths=(
 	"$HOME/.local/bin"
-	"$my_bin_PATH"
-	"$my_local_PATH/bin"
-	"$data_PATH/bin/gcc-11.3/bin"
-	"$data_PATH/bin/async-profiler"
-	"/opt/nvim"
+	"$HOME/local/bin"
+	"$HOME/local/gcc-11.3/bin"
 	"${Matlab_PATH}"
 	"${mricron_PATH}"
 	"${CAMINO_PATH}"
@@ -33,10 +28,10 @@ done
 
 # ===== Library Paths =====
 lib_paths=(
-	"$data_PATH/bin/gcc-11.3/lib64"
-	"$data_PATH/local/lib64"
-	"$data_PATH/local/lib"
-	"$data_PATH/anaconda3/envs/sga/lib"
+	"$HOME/local/lib64"
+	"$HOME/local/lib"
+	"$HOME/local/gcc-11.3/lib64"
+	# "$data_PATH/anaconda3/envs/sga/lib"
 )
 
 # Add library paths
@@ -71,6 +66,9 @@ alias wnv="watch -n 0.5 -d nvidia-smi"
 alias cdcy="cd $data_PATH"
 alias bashrc="vi ~/.bashrc"
 alias sbashrc="source ~/.bashrc"
+
+# Add alias for nvim
+# alias vi=nvim
 
 # ===== Functions =====
 # Ranger CD function
