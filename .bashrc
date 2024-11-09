@@ -68,7 +68,7 @@ alias bashrc="vi ~/.bashrc"
 alias sbashrc="source ~/.bashrc"
 
 # Add alias for nvim
-# alias vi=nvim
+alias vi=nvim
 
 # ===== Functions =====
 # Ranger CD function
@@ -83,7 +83,7 @@ ranger_cd() {
 
 # The Art of Command Line function
 taocl() {
-	local local_readme="$data_PATH/repos/the-art-of-command-line/README.md"
+	local local_readme="$HOME/repos/the-art-of-command-line/README.md"
 	local remote_readme="https://raw.githubusercontent.com/jlevy/the-art-of-command-line/master/README.md"
 
 	if [[ "$1" == "-r" ]]; then
@@ -105,7 +105,7 @@ set -o vi
 
 # ===== Initialization =====
 # Start in data_PATH when in home directory
-[[ "$PWD" = "$HOME" ]] && cd "$data_PATH"
+# [[ "$PWD" = "$HOME" ]] && cd "$data_PATH"
 
 # Source additional configurations
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
