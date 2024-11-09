@@ -58,7 +58,9 @@ export PYTHONPATH="$PYTHONPATH:$my_python_PATH"
 export HF_ENDPOINT="https://hf-mirror.com"
 
 # API Keys
-export XAI_API_KEY="xai-pgboaiRfBgq40IPxMfQE18EqJcG1aR2BuEhILNM3iO2R8r9TsoT6NsGaJhtFoIfalGvEWSdHIekZD1g2"
+if [ -f "$HOME/.api_keys" ]; then
+    source "$HOME/.api_keys"
+fi
 
 # ===== Aliases =====
 alias nv="nvidia-smi"
