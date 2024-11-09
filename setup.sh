@@ -45,12 +45,12 @@ for file in "${x11_files[@]}"; do
     create_symlink "$HOME/repos/dotfiles/$file" "$HOME/$file"
 done
 
+# Tmux powerline theme
+create_symlink "$data_PATH/repos/dotfiles/.config/tmux-powerline/themes/my-theme.sh" \
+    "$HOME/.config/tmux-powerline/themes/my-theme.sh"
+
 # Scripts
 scripts=("check_ip.sh")
 for script in "${scripts[@]}"; do
     create_symlink "$data_PATH/repos/dotfiles/scripts/$script" "$HOME/$script"
 done
-
-# Tmux powerline theme
-create_symlink "$data_PATH/repos/dotfiles/.config/tmux-powerline/themes/my-theme.sh" \
-    "$HOME/.config/tmux-powerline/themes/my-theme.sh"
