@@ -31,6 +31,13 @@ create_symlink() {
     fi
 }
 
+# Ensure usr/local exists with proper structure
+mkdir -p "$data_PATH/usr/local"/{bin,lib,lib64,share,include,etc,src,libexec,sbin,var}
+
+# Create local symlinks
+create_symlink "$data_PATH/usr/local" "$HOME/local"
+create_symlink "$data_PATH/usr/local" "$HOME/.local"
+
 # Define directories to link
 directories=("repos" "Downloads" "notes")
 
