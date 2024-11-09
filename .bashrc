@@ -66,8 +66,8 @@ fi
 alias nv="nvidia-smi"
 alias wnv="watch -n 0.5 -d nvidia-smi"
 alias cdcy="cd $data_PATH"
-alias bashrc="vi ~/.bashrc"
-alias sbashrc="source ~/.bashrc"
+alias eb="vi ~/.bashrc"
+alias sb="source ~/.bashrc"
 
 # Add alias for nvim
 alias vi=nvim
