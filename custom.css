@@ -1,0 +1,15 @@
+/* Define a custom font for comments */
+.monaco-editor .token.comment {
+    font-family: "Victor Mono", sans-serif !important; /* Replace with your preferred font */
+    font-style: italic; /* Optional: makes comments italic */
+}
+
+/* Define a different font for strings */
+.monaco-editor .token.string {
+    font-family: "FiraCode NF", monospace !important; /* Replace with another font */
+}
+
+/* Set the main font for code */
+.monaco-editor {
+    font-family: "FiraCode NF", monospace !important;
+}
