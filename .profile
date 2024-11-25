@@ -5,6 +5,9 @@ export EDITOR=vim
 export XDG_CONFIG_HOME="$HOME/.config"
 export data_PATH="/data/users/cyang"
 
+# NPM configuration
+export NPM_CONFIG_REGISTRY="https://registry.npmmirror.com"
+
 # GCC configuration
 export CC="$HOME/local/gcc-11.3/bin/gcc"
 export CXX="$HOME/local/gcc-11.3/bin/g++"

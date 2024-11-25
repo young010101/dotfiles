@@ -1,6 +1,6 @@
-.PHONY: all install-mamba install-tools clean
+.PHONY: all install-mamba install-tools clean install-dotfiles
 
-all: install-mamba install-tools
+all: install-mamba install-tools install-dotfiles
 
 install-mamba:
 	@echo "📦 Installing Mambaforge..."
@@ -29,6 +29,18 @@ install-tools:
 		cmake \
 		gcc \
 		python=3.10
+
+install-dotfiles:
+	@echo "🔗 Creating symbolic links for dotfiles..."
+	@for file in .bashrc .zshrc .profile .bash_profile; do \
+		if [ -f "$(HOME)/$$file" ]; then \
+			timestamp=$$(date +%Y%m%d_%H%M%S); \
+			echo "📦 Backing up existing $$file to $$file.$$timestamp"; \
+			mv "$(HOME)/$$file" "$(HOME)/$$file.$$timestamp"; \
+		fi; \
+		echo "🔗 Creating symlink for $$file"; \
+		ln -sv "$(PWD)/$$file" "$(HOME)/$$file"; \
+	done
 
 clean:
 	@echo "🧹 Cleaning up..."

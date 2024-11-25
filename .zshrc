@@ -13,10 +13,19 @@
 # =============================================================================
 
 # --------------------------- 1. Oh-My-Zsh Configuration -------------------
+# Check if Oh My Zsh is installed
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    echo "Oh My Zsh is not installed. Would you like to install it? (y/n)"
+    read -r answer
+    if [ "$answer" = "y" ]; then
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    fi
+fi
+
 export ZSH="$HOME/.oh-my-zsh"
 
 # zsh-autosuggestions plugin installation check
-ZSH_AUTOSUGGESTIONS_PATH="${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+ZSH_AUTOSUGGESTIONS_PATH="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
 if [ ! -d "$ZSH_AUTOSUGGESTIONS_PATH" ]; then
     echo "Installing zsh-autosuggestions..."
     git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_AUTOSUGGESTIONS_PATH"

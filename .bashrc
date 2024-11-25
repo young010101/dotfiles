@@ -28,6 +28,15 @@ else
     fi
 fi
 
+# Check for .bash_profile
+if [ ! -f "$HOME/.bash_profile" ]; then
+    echo "~/.bash_profile not found. Would you like to create a symbolic link from ~/repos/dotfiles? (y/n)"
+    read -r answer
+    if [ "$answer" = "y" ]; then
+        ln -s "$HOME/repos/dotfiles/.bash_profile" "$HOME/.bash_profile"
+    fi
+fi
+
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -137,6 +146,14 @@ parse_git_branch() {
 
 # --------------------------- 5. External Tools ---------------------------
 # API Keys
+if [ ! -f "$HOME/.api_keys" ]; then
+    echo "Would you like to create $HOME/.api_keys? (y/n)"
+    read -r answer
+    if [ "$answer" = "y" ]; then
+        touch "$HOME/.api_keys"
+        echo "Created $HOME/.api_keys"
+    fi
+fi
 [ -f "$HOME/.api_keys" ] && source "$HOME/.api_keys"
 
 # FZF
@@ -149,6 +166,18 @@ parse_git_branch() {
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# Check and install diff-so-fancy if npm exists
+if command -v npm >/dev/null && ! command -v diff-so-fancy >/dev/null; then
+    echo "diff-so-fancy is not installed but npm is available. Would you like to install it? (y/n)"
+    read -r answer
+    if [ "$answer" = "y" ]; then
+        npm install -g diff-so-fancy
+        # Configure git to use diff-so-fancy
+        git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
+        git config --global interactive.diffFilter "diff-so-fancy --patch"
+    fi
+fi
 
 # --------------------------- 6. Final Initialization -------------------
 # Starship prompt
