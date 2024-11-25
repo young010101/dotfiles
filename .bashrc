@@ -8,6 +8,10 @@ export EDITOR=vim
 export XDG_CONFIG_HOME="$HOME/.config"
 export data_PATH="/data/users/cyang"
 
+# GCC configuration
+export CC="$HOME/local/gcc-11.3/bin/gcc"
+export CXX="$HOME/local/gcc-11.3/bin/g++"
+
 # Base paths
 export my_python_PATH="$data_PATH/bin/python"
 
