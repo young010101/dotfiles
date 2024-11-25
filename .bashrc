@@ -4,8 +4,8 @@
 # Structure:
 #   1. Basic Settings
 #   2. Shell Options
-#   3. Aliases
-#   4. Functions
+#   3. Bash-specific Aliases
+#   4. Bash-specific Functions
 #   5. External Tools
 #   6. Final Initialization
 # =============================================================================
@@ -14,6 +14,18 @@
 # Source global definitions
 if [ -f /etc/bashrc ]; then
     . /etc/bashrc
+fi
+
+# Source common shell configurations
+if [ -f "$HOME/.shell_common" ]; then
+    . "$HOME/.shell_common"
+else
+    echo "~/.shell_common not found. Would you like to create a symbolic link from ~/repos/dotfiles? (y/n)"
+    read -r answer
+    if [ "$answer" = "y" ]; then
+        ln -s "$HOME/repos/dotfiles/.shell_common" "$HOME/.shell_common"
+        . "$HOME/.shell_common"
+    fi
 fi
 
 # If not running interactively, don't do anything
@@ -36,79 +48,62 @@ shopt -s cdspell
 shopt -s dirspell
 shopt -s globstar
 
-# --------------------------- 3. Aliases ----------------------------------
-# System monitoring
-alias nv="nvidia-smi"
-alias wnv="watch -n 0.5 -d nvidia-smi"
-alias ports='netstat -tulanp'
-alias mem='free -h'
-alias df='df -h'
-
-# Proxy settings
-alias proxy='export http_proxy=http://127.0.0.1:7890 https_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890'
-alias unproxy='unset http_proxy https_proxy all_proxy'
-alias checkproxy='curl ipinfo.io'
-
-# Navigation
-alias cdcy="cd $data_PATH"
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-
-# Development
-alias vi=nvim
+# --------------------------- 3. Bash-specific Aliases ---------------------
 alias eb="vi ~/.bashrc"
 alias sb="source ~/.bashrc"
-alias py='python'
-alias pip='python -m pip'
-alias activate='source activate'
 
-# Git shortcuts
-alias gs='git status'
-alias ga='git add'
-alias gc='git commit'
-alias gp='git push'
-alias gl='git pull'
-alias gd='git diff'
-
-# --------------------------- 4. Functions --------------------------------
+# --------------------------- 4. Bash-specific Functions ---------------------
 # Ranger CD function
 ranger_cd() {
+    # First check if ranger exists
+    if ! command -v ranger &> /dev/null; then
+        # Detect OS
+        if [ -f /etc/os-release ]; then
+            . /etc/os-release
+            OS=$ID
+            VERSION=$VERSION_ID
+        elif [ -f /etc/redhat-release ]; then
+            OS="centos"
+            VERSION=$(cat /etc/redhat-release | tr -dc '0-9.'|cut -d \. -f1)
+        else
+            OS=$(uname -s)
+        fi
+
+        echo "ranger is not installed. Would you like to install it? (y/n)"
+        read -r answer
+        if [ "$answer" = "y" ]; then
+            case $OS in
+                "centos"|"rhel")
+                    if [ "$VERSION" -ge 8 ]; then
+                        sudo dnf install ranger
+                    else
+                        sudo yum install epel-release
+                        sudo yum install ranger
+                    fi
+                    ;;
+                "ubuntu"|"debian")
+                    sudo apt-get update && sudo apt-get install ranger
+                    ;;
+                "arch")
+                    sudo pacman -S ranger
+                    ;;
+                *)
+                    echo "Unsupported operating system: $OS"
+                    return 1
+                    ;;
+            esac
+        else
+            echo "ranger is required for this function"
+            return 1
+        fi
+    fi
+
     local temp_file="$(mktemp)"
     ranger --choosedir="$temp_file" "$@"
     if [ -f "$temp_file" ] && [ "$(cat "$temp_file")" != "$(pwd)" ]; then
         cd "$(cat "$temp_file")"
     fi
     rm -f "$temp_file"
-}
-
-# Create and enter directory
-mkcd() {
-    mkdir -p "$1" && cd "$1"
-}
-
-# Extract various archive formats
-extract() {
-    if [ -f "$1" ]; then
-        case "$1" in
-            *.tar.bz2)   tar xjf "$1"   ;;
-            *.tar.gz)    tar xzf "$1"   ;;
-            *.bz2)       bunzip2 "$1"   ;;
-            *.rar)       unrar x "$1"   ;;
-            *.gz)        gunzip "$1"    ;;
-            *.tar)       tar xf "$1"    ;;
-            *.tbz2)      tar xjf "$1"   ;;
-            *.tgz)       tar xzf "$1"   ;;
-            *.zip)       unzip "$1"     ;;
-            *.Z)         uncompress "$1" ;;
-            *.7z)        7z x "$1"      ;;
-            *)          echo "'$1' cannot be extracted via extract()" ;;
-        esac
-    else
-        echo "'$1' is not a valid file"
-    fi
 }
 
 # Enhanced cd command
@@ -157,13 +152,46 @@ export NVM_DIR="$HOME/.nvm"
 
 # --------------------------- 6. Final Initialization -------------------
 # Starship prompt
-command -v starship >/dev/null && eval "$(starship init bash)"
+if command -v starship >/dev/null; then
+    eval "$(starship init bash)"
+else
+    echo "Starship prompt is not installed. Would you like to install it? (y/n)"
+    read -r answer
+    if [ "$answer" = "y" ]; then
+        curl -sS https://starship.rs/install.sh | sh
+        eval "$(starship init bash)"
+    fi
+fi
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/data/users/cyang/miniforge3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/data/users/cyang/miniforge3/etc/profile.d/conda.sh" ]; then
+        . "/data/users/cyang/miniforge3/etc/profile.d/conda.sh"
+    else
+        export PATH="/data/users/cyang/miniforge3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+
+if [ -f "/data/users/cyang/miniforge3/etc/profile.d/mamba.sh" ]; then
+    . "/data/users/cyang/miniforge3/etc/profile.d/mamba.sh"
+fi
+# <<< conda initialize <<<
 
 # Mamba initialization
-if __mamba_setup="$("$MAMBA_EXE" shell hook --shell bash --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"; then
-    eval "$__mamba_setup"
+# Check if mamba exists and initialize
+if ! command -v mamba >/dev/null; then
+    echo "Mamba is not installed. Would you like to install it? (y/n)"
+    read -r answer
+    if [ "$answer" = "y" ]; then
+        curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
+        bash Miniforge3-$(uname)-$(uname -m).sh
+        rm Miniforge3-$(uname)-$(uname -m).sh
+    fi
 else
-    alias mamba="$MAMBA_EXE"
+    echo "Mamba is installed. Initializing..."
 fi
-unset __mamba_setup
-

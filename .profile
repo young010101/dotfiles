@@ -53,8 +53,8 @@ export PYTHONPATH="$PYTHONPATH:$my_python_PATH"
 export HF_ENDPOINT="https://hf-mirror.com"
 
 # Mamba configuration
-export MAMBA_EXE="$data_PATH/anaconda3/bin/mamba"
-export MAMBA_ROOT_PREFIX="$data_PATH/anaconda3"
+export MAMBA_EXE="$data_PATH/miniforge3/bin/mamba"
+export MAMBA_ROOT_PREFIX="$data_PATH/miniforge3"
 
 # If running bash
 if [ -n "$BASH_VERSION" ]; then
