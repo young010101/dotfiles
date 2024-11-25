@@ -10,3 +10,45 @@ $character
 [directory]
 truncation_length = 10 
 truncate_to_repo = false
+
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Inserts a blank line between shell prompts
+add_newline = true
+
+# Replace the '❯' symbol in the prompt with '➜'
+[character] # The name of the module we are configuring is 'character'
+success_symbol = '[➜](bold green)' # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
+
+# Disable the package module, hiding it from the prompt completely
+[package]
+disabled = true
+
+[cmd_duration]
+min_time = 500
+format = "underwent [$duration](bold yellow)"
+
+[directory]
+truncation_length = 5
+format = "[$path]($style)[$read_only]($read_only_style) "
+
+[git_branch]
+format = "on [$symbol$branch]($style) "
+symbol = "🌱 "
+style = "bold purple"
+
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style) )'
+style = "bold blue"
+
+[nodejs]
+format = "via [🤖 $version](bold green) "
+
+[python]
+format = "via [🐍 $version]($style) "
+style = "bold green"
+
+[rust]
+format = "via [⚙️ $version]($style) "
+style = "bold green"
