@@ -44,6 +44,11 @@ alias ports='netstat -tulanp'
 alias mem='free -h'
 alias df='df -h'
 
+# Proxy settings
+alias proxy='export http_proxy=http://127.0.0.1:7890 https_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890'
+alias unproxy='unset http_proxy https_proxy all_proxy'
+alias checkproxy='curl ipinfo.io'
+
 # Navigation
 alias cdcy="cd $data_PATH"
 alias ..='cd ..'
