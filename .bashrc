@@ -39,6 +39,24 @@ alias gp='git push'
 alias gl='git pull'
 alias gd='git diff'
 
+# ===== Additional Aliases =====
+# Navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# System monitoring
+alias ports='netstat -tulanp'
+alias mem='free -h'
+alias df='df -h'
+
+# Development
+alias py='python'
+alias pip='python -m pip'
+alias activate='source activate'
+
 # ===== Functions =====
 # Ranger CD function
 ranger_cd() {
@@ -94,4 +112,42 @@ else
     alias mamba="$MAMBA_EXE"
 fi
 unset __mamba_setup
+
+# ===== Additional Functions =====
+# Create and enter directory
+mkcd() {
+    mkdir -p "$1" && cd "$1"
+}
+
+# Extract various archive formats
+extract() {
+    if [ -f "$1" ]; then
+        case "$1" in
+            *.tar.bz2)   tar xjf "$1"   ;;
+            *.tar.gz)    tar xzf "$1"   ;;
+            *.bz2)       bunzip2 "$1"   ;;
+            *.rar)       unrar x "$1"   ;;
+            *.gz)        gunzip "$1"    ;;
+            *.tar)       tar xf "$1"    ;;
+            *.tbz2)      tar xjf "$1"   ;;
+            *.tgz)       tar xzf "$1"   ;;
+            *.zip)       unzip "$1"     ;;
+            *.Z)         uncompress "$1" ;;
+            *.7z)        7z x "$1"      ;;
+            *)          echo "'$1' cannot be extracted via extract()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+# Enhanced cd command that shows directory contents after cd
+cd() {
+    builtin cd "$@" && ls
+}
+
+# Git branch in prompt (if not using starship)
+parse_git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
 
