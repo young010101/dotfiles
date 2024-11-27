@@ -76,6 +76,46 @@ mkcd() {
     mkdir -p "$1" && cd "$1"
 }
 
+# Fun cowsay function
+say() {
+    # Check if required commands are installed
+    if ! command -v cowsay >/dev/null || ! command -v fortune >/dev/null || ! command -v lolcat >/dev/null; then
+        echo "Installing required packages..."
+        if command -v apt-get >/dev/null; then
+            sudo apt-get update && sudo apt-get install -y cowsay fortune-mod ruby
+            sudo gem install lolcat
+        elif command -v yum >/dev/null; then
+            sudo yum install -y cowsay fortune-mod ruby
+            sudo gem install lolcat
+        elif command -v pacman >/dev/null; then
+            sudo pacman -S --noconfirm cowsay fortune-mod ruby
+            sudo gem install lolcat
+        else
+            echo "Could not install required packages. Please install cowsay, fortune and lolcat manually."
+            return 1
+        fi
+    fi
+
+    # Array of available cowfiles
+    local cowfiles=($(cowsay -l | tail -n +2))
+    
+    # Get a random cowfile
+    local random_cow=${cowfiles[$RANDOM % ${#cowfiles[@]}]}
+    
+    if [ $# -eq 0 ]; then
+        # If no argument provided, use fortune
+        fortune | cowsay -f $random_cow | lolcat
+    else
+        # If argument provided, use that as the message
+        cowsay -f $random_cow "$*" | lolcat
+    fi
+}
+
+# Greeting with cowsay
+if command -v cowsay >/dev/null && command -v fortune >/dev/null && command -v lolcat >/dev/null; then
+    say "Welcome back, $(whoami)! 🚀"
+fi
+
 # --------------------------- 3. Common Environment Variables -------------
 export EDITOR='nvim'
  
