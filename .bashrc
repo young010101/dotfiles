@@ -57,6 +57,9 @@ shopt -s cdspell
 shopt -s dirspell
 shopt -s globstar
 
+# Readline key bindings
+bind '"jk":vi-movement-mode'
+
 # --------------------------- 3. Bash-specific Aliases ---------------------
 alias eb="vi ~/.bashrc"
 alias sb="source ~/.bashrc"
