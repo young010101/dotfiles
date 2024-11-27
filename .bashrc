@@ -144,6 +144,115 @@ parse_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
 
+# Check and update Neovim version
+check_nvim_version() {
+    if ! command -v nvim &> /dev/null; then
+        echo "Neovim is not installed. Would you like to install it? (y/n)"
+        read -r answer
+        if [ "$answer" = "y" ]; then
+            case $OS in
+                "ubuntu"|"debian")
+                    sudo add-apt-repository ppa:neovim-ppa/unstable
+                    sudo apt-get update
+                    sudo apt-get install neovim
+                    ;;
+                "centos"|"rhel")
+                    sudo yum install -y epel-release
+                    sudo yum install -y neovim python3-neovim
+                    ;;
+                "arch")
+                    sudo pacman -S neovim
+                    ;;
+                *)
+                    echo "Would you like to clone and build Neovim from source? (y/n)"
+                    read -r build_answer
+                    if [ "$build_answer" = "y" ]; then
+                        cd "$HOME/repos/neovim" 2>/dev/null || {
+                            mkdir -p "$HOME/repos"
+                            cd "$HOME/repos"
+                            git clone https://github.com/neovim/neovim
+                            cd neovim
+                        }
+                        git pull
+                        make clean
+                        make CMAKE_BUILD_TYPE=Release
+                        sudo make install
+                        cd "$OLDPWD"
+                        new_version=$(nvim --version | head -n1 | cut -d ' ' -f2)
+                        echo "Updated Neovim version: $new_version"
+                        
+                        echo "Would you like to clone young010101/nvim configuration? (y/n)"
+                        read -r config_answer
+                        if [ "$config_answer" = "y" ]; then
+                            if [ -d "$HOME/.config/nvim" ]; then
+                                echo "Backing up existing nvim configuration..."
+                                mv "$HOME/.config/nvim" "$HOME/.config/nvim.backup"
+                            fi
+                            git clone https://github.com/young010101/nvim.git "$HOME/.config/nvim"
+                            echo "Neovim configuration has been cloned to ~/.config/nvim"
+                        fi
+                    else
+                        echo "Please update Neovim manually for your system"
+                        return 1
+                    fi
+                    ;;
+            esac
+        fi
+    else
+        current_version=$(nvim --version | head -n1 | cut -d ' ' -f2)
+        echo "Current Neovim version: $current_version"
+        echo "Would you like to update to the latest version? (y/n)"
+        read -r answer
+        if [ "$answer" = "y" ]; then
+            case $OS in
+                "ubuntu"|"debian")
+                    sudo apt-get update
+                    sudo apt-get install --only-upgrade neovim
+                    ;;
+                "centos"|"rhel")
+                    sudo yum update neovim
+                    ;;
+                "arch")
+                    sudo pacman -Syu neovim
+                    ;;
+                *)
+                    echo "Would you like to clone and build Neovim from source? (y/n)"
+                    read -r build_answer
+                    if [ "$build_answer" = "y" ]; then
+                        cd "$HOME/repos/neovim" 2>/dev/null || {
+                            mkdir -p "$HOME/repos"
+                            cd "$HOME/repos"
+                            git clone https://github.com/neovim/neovim
+                            cd neovim
+                        }
+                        git pull
+                        make clean
+                        make CMAKE_BUILD_TYPE=Release
+                        sudo make install
+                        cd "$OLDPWD"
+                        new_version=$(nvim --version | head -n1 | cut -d ' ' -f2)
+                        echo "Updated Neovim version: $new_version"
+                        
+                        echo "Would you like to clone young010101/nvim configuration? (y/n)"
+                        read -r config_answer
+                        if [ "$config_answer" = "y" ]; then
+                            if [ -d "$HOME/.config/nvim" ]; then
+                                echo "Backing up existing nvim configuration..."
+                                mv "$HOME/.config/nvim" "$HOME/.config/nvim.backup"
+                            fi
+                            git clone https://github.com/young010101/nvim.git "$HOME/.config/nvim"
+                            echo "Neovim configuration has been cloned to ~/.config/nvim"
+                        fi
+                    else
+                        echo "Please update Neovim manually for your system"
+                        return 1
+                    fi
+                    ;;
+            esac
+        fi
+    fi
+}
+
 # --------------------------- 5. External Tools ---------------------------
 # API Keys
 if [ ! -f "$HOME/.api_keys" ]; then
