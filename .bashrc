@@ -270,8 +270,46 @@ fi
 
 # FZF
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+if ! command -v fzf >/dev/null; then
+    echo "FZF is not installed. Would you like to install it? (y/n)"
+    read -r answer
+    if [ "$answer" = "y" ]; then
+        case $OS in
+            "ubuntu"|"debian")
+                sudo apt-get update && sudo apt-get install fzf
+                ;;
+            "centos"|"rhel")
+                sudo yum install fzf
+                ;;
+            "arch")
+                sudo pacman -S fzf
+                ;;
+            *)
+                echo "Installing FZF from git..."
+                git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+                ~/.fzf/install --all
+                ;;
+        esac
+    fi
+fi
 
-# Cargo
+# Optional FZF configurations
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+# Cargo and Rust
+if ! command -v cargo >/dev/null; then
+    echo "Rust/Cargo is not installed. Would you like to install it? (y/n)"
+    read -r answer
+    if [ "$answer" = "y" ]; then
+        if command -v mamba >/dev/null; then
+            mamba install rust
+        else
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        fi
+    fi
+fi
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 # NVM
@@ -336,3 +374,4 @@ if ! command -v mamba >/dev/null; then
 else
     echo "Mamba is installed. Initializing..."
 fi
+

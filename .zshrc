@@ -16,7 +16,7 @@
 # Check if Oh My Zsh is installed
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     echo "Oh My Zsh is not installed. Would you like to install it? (y/n)"
-    read -r answer
+    read "answer"
     if [ "$answer" = "y" ]; then
         sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     fi
@@ -158,7 +158,7 @@ if command -v fasd >/dev/null; then
     unset fasd_cache
 else
     echo "fasd not found. Would you like to install it? (y/n)"
-    read -r answer
+    read "answer"
     if [ "$answer" = "y" ]; then
         if command -v pacman >/dev/null; then
             sudo pacman -S fasd
@@ -172,8 +172,17 @@ else
     fi
 fi
 
-# FZF configuration
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh  # Changed from .fzf.bash to .fzf.zsh
+# FZF
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+if ! command -v fzf >/dev/null || [ ! -f ~/.fzf.zsh ]; then
+    echo "FZF or its shell integration is not properly installed. Would you like to install/repair it? (y/n)"
+    read "answer"
+    if [ "$answer" = "y" ]; then
+        # Use git installation method by default
+        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+        ~/.fzf/install
+    fi
+fi
 
 # Pacman/Yay helpers (only if yay is installed)
 if command -v yay >/dev/null; then
@@ -208,15 +217,25 @@ fi
 BROOT_PATH="$HOME/.config/broot/launcher/bash/br"
 [ -f "$BROOT_PATH" ] && source "$BROOT_PATH"
 
-# Mamba initialization (only if MAMBA_EXE is set)
-if [ -n "$MAMBA_EXE" ] && [ -f "$MAMBA_EXE" ]; then
-    if __mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"; then
-        eval "$__mamba_setup"
+# Debug output before conda initialization
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/data/users/cyang/miniforge3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/data/users/cyang/miniforge3/etc/profile.d/conda.sh" ]; then
+        . "/data/users/cyang/miniforge3/etc/profile.d/conda.sh"
     else
-        alias mamba="$MAMBA_EXE"
+        export PATH="/data/users/cyang/miniforge3/bin:$PATH"
     fi
-    unset __mamba_setup
 fi
+unset __conda_setup
+
+if [ -f "/data/users/cyang/miniforge3/etc/profile.d/mamba.sh" ]; then
+    . "/data/users/cyang/miniforge3/etc/profile.d/mamba.sh"
+fi
+# <<< conda initialize <<<
 
 # Key bindings (only if the widgets exist)
 (( $+widgets[fzf-man-widget] )) && bindkey '^h' fzf-man-widget
