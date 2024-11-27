@@ -274,22 +274,9 @@ if ! command -v fzf >/dev/null; then
     echo "FZF is not installed. Would you like to install it? (y/n)"
     read -r answer
     if [ "$answer" = "y" ]; then
-        case $OS in
-            "ubuntu"|"debian")
-                sudo apt-get update && sudo apt-get install fzf
-                ;;
-            "centos"|"rhel")
-                sudo yum install fzf
-                ;;
-            "arch")
-                sudo pacman -S fzf
-                ;;
-            *)
-                echo "Installing FZF from git..."
-                git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-                ~/.fzf/install --all
-                ;;
-        esac
+        echo "Installing FZF from git..."
+        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+        ~/.fzf/install --all
     fi
 fi
 
