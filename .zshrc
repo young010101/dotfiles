@@ -147,27 +147,21 @@ fzf-flatpak-install-widget() {
 }
 
 # --------------------------- 7. External Tools -------------------------
-# Fasd configuration (if installed)
-if command -v fasd >/dev/null; then
-    eval "$(fasd --init auto)"
-    fasd_cache="$HOME/.fasd-init-zsh"
-    if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
-        fasd --init posix-alias zsh-hook zsh-ccomp zsh-ccomp-install >| "$fasd_cache"
-    fi
-    source "$fasd_cache"
-    unset fasd_cache
+# Zoxide configuration (modern replacement for fasd)
+if command -v zoxide >/dev/null; then
+    eval "$(zoxide init zsh)"
 else
-    echo "fasd not found. Would you like to install it? (y/n)"
+    echo "zoxide not found. Would you like to install it? (y/n)"
     read "answer"
     if [ "$answer" = "y" ]; then
-        if command -v pacman >/dev/null; then
-            sudo pacman -S fasd
-        elif command -v apt-get >/dev/null; then
-            sudo apt-get install fasd
+        if command -v apt-get >/dev/null; then
+            sudo apt-get install zoxide
+        elif command -v pacman >/dev/null; then
+            sudo pacman -S zoxide
         elif command -v dnf >/dev/null; then
-            sudo dnf install fasd
+            sudo dnf install zoxide
         else
-            echo "Could not determine package manager. Please install fasd manually."
+            echo "Could not determine package manager. Please install zoxide manually."
         fi
     fi
 fi
