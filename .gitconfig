@@ -5,7 +5,7 @@
   insteadOf = https://github.com/
 [core]
 	quotepath = false
-	pager = diff-so-fancy | less --tabs=4 -RFX
+	; pager = diff-so-fancy | less --tabs=4 -RFX
 [user]
 	name = co
 	email = yc5@tju.edu.cn
@@ -33,4 +33,4 @@
 [color]
 	ui = auto
 [interactive]
-	diffFilter = diff-so-fancy --patch
+	; diffFilter = diff-so-fancy --patch
