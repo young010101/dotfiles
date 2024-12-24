@@ -1,9 +1,9 @@
 # .bash_profile
 
 # Source .bashrc for login shells
-if [ -f "$HOME/.bashrc" ]; then
-    . "$HOME/.bashrc"
-fi
+# if [ -f "$HOME/.bashrc" ]; then
+#     . "$HOME/.bashrc"
+# fi
 
 # User specific environment and startup programs
 

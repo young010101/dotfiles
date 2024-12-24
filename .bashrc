@@ -299,6 +299,27 @@ if ! command -v cargo >/dev/null; then
 fi
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
+# Zoxide configuration (modern replacement for fasd)
+if command -v zoxide >/dev/null; then
+    eval "$(zoxide init bash)"
+else
+    echo "zoxide not found. Would you like to install it? (y/n)"
+    read -r answer
+    if [ "$answer" = "y" ]; then
+        if command -v apt-get >/dev/null; then
+            sudo apt-get install zoxide
+        elif command -v pacman >/dev/null; then
+            sudo pacman -S zoxide
+        elif command -v dnf >/dev/null; then
+            sudo dnf install zoxide
+        elif command -v cargo >/dev/null; then
+            cargo install zoxide
+        else
+            echo "Could not determine package manager. Please install zoxide manually."
+        fi
+    fi
+fi
+
 # NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
