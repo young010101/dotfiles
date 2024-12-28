@@ -42,6 +42,14 @@ install-dotfiles:
 		ln -sv "$(PWD)/$$file" "$(HOME)/$$file"; \
 	done
 
+install-tpm:
+	@echo "Cloning TPM into ~/.tmux/plugins/tpm"
+	@if [ ! -d "$(HOME)/.tmux/plugins/tpm" ]; then \
+		git clone https://github.com/tmux-plugins/tpm $(HOME)/.tmux/plugins/tpm; \
+	else \
+		echo "TPM is already installed."; \
+	fi
+
 clean:
 	@echo "🧹 Cleaning up..."
 	@rm -f Mambaforge-*.sh 
