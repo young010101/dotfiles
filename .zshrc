@@ -65,6 +65,7 @@ setopt HIST_BEEP                 # Beep when accessing nonexistent history
 # Vi mode
 bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
+bindkey -M viins 'jj' vi-cmd-mode
 
 # --------------------------- 4. Common Configuration --------------------
 # Source common shell configurations
