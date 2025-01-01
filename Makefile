@@ -42,6 +42,17 @@ install-dotfiles:
 		ln -sv "$(PWD)/$$file" "$(HOME)/$$file"; \
 	done
 
+install-kitty-conf:
+	@echo "🔗 Creating symbolic links for kitty..."
+	@mkdir -p "$(HOME)/.config/kitty"
+	@if [ -f "$(HOME)/.config/kitty/kitty.conf" ]; then \
+		timestamp=$$(date +%Y%m%d_%H%M%S); \
+		echo "📦 Backing up existing kitty.conf to kitty.conf.$$timestamp"; \
+		mv "$(HOME)/.config/kitty/kitty.conf" "$(HOME)/.config/kitty/kitty.conf.$$timestamp"; \
+	fi
+	@echo "🔗 Creating symlink for kitty.conf"
+	@ln -sv "$(PWD)/.config/kitty/kitty.conf" "$(HOME)/.config/kitty/kitty.conf"
+
 install-tpm:
 	@echo "Cloning TPM into ~/.tmux/plugins/tpm"
 	@if [ ! -d "$(HOME)/.tmux/plugins/tpm" ]; then \
