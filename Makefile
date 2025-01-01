@@ -43,6 +43,12 @@ install-dotfiles:
 	done
 
 install-kitty-conf:
+	@if ! command -v kitty &> /dev/null; then \
+		echo "⚠️  Kitty terminal is not installed. Please install it first:"; \
+		echo "   • macOS: brew install --cask kitty"; \
+		echo "   • Linux: Visit https://sw.kovidgoyal.net/kitty/binary/"; \
+		exit 1; \
+	fi
 	@echo "🔗 Creating symbolic links for kitty..."
 	@mkdir -p "$(HOME)/.config/kitty"
 	@if [ -f "$(HOME)/.config/kitty/kitty.conf" ]; then \
