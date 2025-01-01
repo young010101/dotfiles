@@ -48,6 +48,19 @@ alias gp='git push'
 alias gl='git pull'
 alias gd='git diff'
 
+# Check if nnn exists and set ls alias accordingly
+if command -v nnn >/dev/null 2>&1; then
+    alias ls='nnn -de'
+else
+    # Use standard ls with colors if available
+    if ls --color=auto >/dev/null 2>&1; then
+        alias ls='ls --color=auto'
+    else
+        # For macOS and BSD systems
+        alias ls='ls -G'
+    fi
+fi
+
 # --------------------------- 2. Common Functions --------------------------
 # Extract various archive formats
 extract() {
