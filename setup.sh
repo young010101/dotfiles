@@ -31,6 +31,6 @@ mamba install -y \
     make \
     cmake \
     gcc \
-    python=3.10
+    python=3.12
 
 echo "✅ Setup complete! Please restart your shell."
