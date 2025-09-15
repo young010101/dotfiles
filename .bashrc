@@ -352,20 +352,20 @@ fi
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/data/users/cyang/miniforge3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/cyang/miniforge3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/data/users/cyang/miniforge3/etc/profile.d/conda.sh" ]; then
-        . "/data/users/cyang/miniforge3/etc/profile.d/conda.sh"
+    if [ -f "/home/cyang/miniforge3/etc/profile.d/conda.sh" ]; then
+        . "/home/cyang/miniforge3/etc/profile.d/conda.sh"
     else
-        export PATH="/data/users/cyang/miniforge3/bin:$PATH"
+        export PATH="/home/cyang/miniforge3/bin:$PATH"
     fi
 fi
 unset __conda_setup
 
-if [ -f "/data/users/cyang/miniforge3/etc/profile.d/mamba.sh" ]; then
-    . "/data/users/cyang/miniforge3/etc/profile.d/mamba.sh"
+if [ -f "/home/cyang/miniforge3/etc/profile.d/mamba.sh" ]; then
+    . "/home/cyang/miniforge3/etc/profile.d/mamba.sh"
 fi
 # <<< conda initialize <<<
 
@@ -383,3 +383,6 @@ else
     echo "Mamba is installed. Initializing..."
 fi
 
+
+. "$HOME/.local/bin/env"
+export DASHSCOPE_API_KEY=sk-9bb987192a624d20b71705b248b57f49

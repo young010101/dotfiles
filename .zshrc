@@ -1,239 +1,59 @@
 # =============================================================================
-#                           ZSH CONFIGURATION
-# =============================================================================
-# Structure:
-#   1. Oh-My-Zsh Configuration
-#   2. Basic Settings
-#   3. Shell Options
-#   4. Common Configuration
-#   5. Zsh-specific Aliases
-#   6. Zsh-specific Functions
-#   7. External Tools
-#   8. Final Initialization
+#                        SIMPLIFIED ZSH CONFIGURATION
 # =============================================================================
 
-# --------------------------- 1. Oh-My-Zsh Configuration -------------------
-# Check if Oh My Zsh is installed
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
-    echo "Oh My Zsh is not installed. Would you like to install it? (y/n)"
-    read "answer"
-    if [ "$answer" = "y" ]; then
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    fi
-fi
-
+# Oh-My-Zsh
 export ZSH="$HOME/.oh-my-zsh"
 
-# zsh-autosuggestions plugin installation check
-ZSH_AUTOSUGGESTIONS_PATH="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
-if [ ! -d "$ZSH_AUTOSUGGESTIONS_PATH" ]; then
-    echo "Installing zsh-autosuggestions..."
-    git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_AUTOSUGGESTIONS_PATH"
-fi
+# Plugins (only if they exist)
+plugins=(git)
+[ -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions" ] && plugins+=(zsh-autosuggestions)
 
-plugins=(
-    git
-    zsh-autosuggestions
-    web-search
-    aliases
-)
+# Source Oh My Zsh if it exists
+[ -d "$ZSH" ] && source $ZSH/oh-my-zsh.sh
 
-source $ZSH/oh-my-zsh.sh
-
-# --------------------------- 2. Basic Settings -------------------------------
 # History configuration
 HISTFILE="$HOME/.zsh_history"
-HISTSIZE=10000000
-SAVEHIST=10000000
+HISTSIZE=10000
+SAVEHIST=10000
 
-# History options
-setopt BANG_HIST                 # Treat the '!' character specially during expansion
-setopt EXTENDED_HISTORY          # Write the history file in the ":start:elapsed;command" format
-setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits
-setopt SHARE_HISTORY             # Share history between all sessions
-setopt HIST_EXPIRE_DUPS_FIRST    # Expire duplicate entries first when trimming history
-setopt HIST_IGNORE_DUPS          # Don't record an entry that was just recorded again
-setopt HIST_IGNORE_ALL_DUPS      # Delete old recorded entry if new entry is a duplicate
-setopt HIST_FIND_NO_DUPS         # Do not display a line previously found
-setopt HIST_IGNORE_SPACE         # Don't record an entry starting with a space
-setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file
-setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry
-setopt HIST_VERIFY               # Don't execute immediately upon history expansion
-setopt HIST_BEEP                 # Beep when accessing nonexistent history
+# Essential history options
+setopt EXTENDED_HISTORY
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
 
-# --------------------------- 3. Shell Options ----------------------------
-# Vi mode
-bindkey -v
-bindkey -M viins 'jk' vi-cmd-mode
-bindkey -M viins 'jj' vi-cmd-mode
+# Source common configurations if they exist
+[ -f "$HOME/.shell_common" ] && . "$HOME/.shell_common"
 
-# --------------------------- 4. Common Configuration --------------------
-# Source common shell configurations
-if [ -f "$HOME/.shell_common" ]; then
-    . "$HOME/.shell_common"
-fi
-
-# --------------------------- 5. Zsh-specific Aliases --------------------
+# Basic aliases
 alias ez="vi ~/.zshrc"
 alias sz="source ~/.zshrc"
 
-# --------------------------- 6. Zsh-specific Functions -----------------
-# FZF history search
-fh() {
-   print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')
-}
-
-## FZF file selection
-#f() {
-#    # Check if fd is installed
-#    if ! command -v fd >/dev/null; then
-#        echo "fd command not found. Would you like to install it? (y/n)"
-#        read -r answer
-#        if [ "$answer" = "y" ]; then
-#            if command -v pacman >/dev/null; then
-#                sudo pacman -S fd
-#            elif command -v apt-get >/dev/null; then
-#                sudo apt-get install fd-find
-#            elif command -v dnf >/dev/null; then
-#                sudo dnf install fd-find
-#            else
-#                echo "Could not determine package manager. Please install fd manually."
-#                return 1
-#            fi
-#        else
-#            return 1
-#        fi
-#    fi
-#    
-#    sels=( "${(@f)$(fd "${fd_default[@]}" "${@:2}"| fzf)}" )
-#    test -n "$sels" && print -z -- "$1 ${sels[@]:q:q}"
-#}
-#
-#fm() f "$@" --max-depth 1
-
-# Process management
-fkill() {
-    local pid
-    pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
-    if [ "x$pid" != "x" ]; then
-        echo $pid | xargs kill -${1:-9}
-    fi
-}
-
-# Man page functions
-fman() {
-    man -k . | fzf --prompt='Man> ' | awk '{print $1}' | xargs -r man
-}
-
-# Flatpak management
-fzf-flatpak-install-widget() {
-    flatpak remote-ls flathub --cached --columns=app,name,description \
-    | awk -v cyn=$(tput setaf 6) -v blu=$(tput setaf 4) -v bld=$(tput bold) -v res=$(tput sgr0) \
-    '{
-        app_info=""; 
-        for(i=2;i<=NF;i++){
-            app_info=cyn app_info" "$i 
-        };
-        print blu bld $2" -" res app_info "|" $1
-    }' \
-    | column -t -s "|" -R 3 \
-    | fzf \
-        --ansi \
-        --with-nth=1.. \
-        --prompt="Install > " \
-        --preview-window "nohidden,40%,<50(down,50%,border-rounded)" \
-        --preview "flatpak --system remote-info flathub {-1}" \
-        --bind "enter:execute(flatpak install flathub {-1})"
-    zle reset-prompt
-}
-
-# --------------------------- 7. External Tools -------------------------
-# Zoxide configuration (modern replacement for fasd)
-if command -v zoxide >/dev/null; then
-    eval "$(zoxide init zsh)"
-else
-    echo "zoxide not found. Would you like to install it? (y/n)"
-    read "answer"
-    if [ "$answer" = "y" ]; then
-        if command -v apt-get >/dev/null; then
-            sudo apt-get install zoxide
-        elif command -v pacman >/dev/null; then
-            sudo pacman -S zoxide
-        elif command -v dnf >/dev/null; then
-            sudo dnf install zoxide
-        else
-            echo "Could not determine package manager. Please install zoxide manually."
-        fi
-    fi
-fi
-
-# FZF
+# External tools (only if installed)
+command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
+command -v starship >/dev/null && eval "$(starship init zsh)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-if ! command -v fzf >/dev/null || [ ! -f ~/.fzf.zsh ]; then
-    echo "FZF or its shell integration is not properly installed. Would you like to install/repair it? (y/n)"
-    read "answer"
-    if [ "$answer" = "y" ]; then
-        # Use git installation method by default
-        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-        ~/.fzf/install
-    fi
-fi
+[ -f "$HOME/.config/broot/launcher/bash/br" ] && source "$HOME/.config/broot/launcher/bash/br"
 
-# Pacman/Yay helpers (only if yay is installed)
-if command -v yay >/dev/null; then
-    function in() {
-        yay -Slq | fzf -q "$1" -m --preview 'yay -Si {1}'| xargs -ro yay -S
-    }
+# Homebrew
+[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-    function re() {
-        yay -Qq | fzf -q "$1" -m --preview 'yay -Qi {1}' | xargs -ro yay -Rns
+# nnn file manager
+if command -v nnn >/dev/null; then
+    [ -f ~/.config/nnn/nnn.conf ] && source ~/.config/nnn/nnn.conf
+    n() {
+        [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ] && echo "nnn is already running" && return
+        export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+        nnn "$@"
+        [ -f "$NNN_TMPFILE" ] && . "$NNN_TMPFILE" && rm -f "$NNN_TMPFILE" > /dev/null
     }
 fi
 
-# --------------------------- 8. Final Initialization ------------------
-# Starship prompt
-if command -v starship >/dev/null; then
-    eval "$(starship init zsh)"
-else
-    echo "Starship prompt is not installed. Would you like to install it? (y/n)"
-    read -r answer
-    if [ "$answer" = "y" ]; then
-        curl -sS https://starship.rs/install.sh | sh
-        eval "$(starship init zsh)"
-    fi
-fi
+# Local environment
+[ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
 
-# Start X if not running and on tty1
-if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
-    exec startx
-fi
-
-# Source broot if it exists
-BROOT_PATH="$HOME/.config/broot/launcher/bash/br"
-[ -f "$BROOT_PATH" ] && source "$BROOT_PATH"
-
-# Debug output before conda initialization
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/data/users/cyang/miniforge3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/data/users/cyang/miniforge3/etc/profile.d/conda.sh" ]; then
-        . "/data/users/cyang/miniforge3/etc/profile.d/conda.sh"
-    else
-        export PATH="/data/users/cyang/miniforge3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-
-if [ -f "/data/users/cyang/miniforge3/etc/profile.d/mamba.sh" ]; then
-    . "/data/users/cyang/miniforge3/etc/profile.d/mamba.sh"
-fi
-# <<< conda initialize <<<
-
-# Key bindings (only if the widgets exist)
-(( $+widgets[fzf-man-widget] )) && bindkey '^h' fzf-man-widget
-(( $+widgets[fzf-flatpak-install-widget] )) && bindkey '^[f^[i' fzf-flatpak-install-widget
-(( $+widgets[fzf-flatpak-uninstall-widget] )) && bindkey '^[f^[u' fzf-flatpak-uninstall-widget
-(( $+widgets[fzf-locate-widget] )) && bindkey '\ei' fzf-locate-widget
+# Auto-start X on tty1
+[ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ] && exec startx
+export DASHSCOPE_API_KEY=sk-9bb987192a624d20b71705b248b57f49

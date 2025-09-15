@@ -4,13 +4,14 @@
 export EDITOR=vim
 export XDG_CONFIG_HOME="$HOME/.config"
 export data_PATH="/data/users/cyang"
+export GOPATH=$HOME/go
 
 # NPM configuration
 export NPM_CONFIG_REGISTRY="https://registry.npmmirror.com"
 
 # GCC configuration
-export CC="$HOME/local/gcc-11.3/bin/gcc"
-export CXX="$HOME/local/gcc-11.3/bin/g++"
+# export CC="$HOME/local/gcc-11.3/bin/gcc"
+# export CXX="$HOME/local/gcc-11.3/bin/g++"
 
 # Base paths
 export my_python_PATH="$data_PATH/bin/python"
@@ -24,11 +25,12 @@ export MANPATH="/opt/camino/man:$MANPATH"
 # ===== Path Configuration =====
 paths=(
     "$HOME/.local/bin"
-    "$HOME/local/bin"
-    "$HOME/local/gcc-11.3/bin"
+    # "$HOME/local/bin"
+    # "$HOME/local/gcc-11.3/bin"
     "${Matlab_PATH}"
     "${mricron_PATH}"
     "${CAMINO_PATH}"
+    "${GOPATH}/bin"
 )
 
 # Add paths to PATH
@@ -38,9 +40,9 @@ done
 
 # ===== Library Paths =====
 lib_paths=(
-    "$HOME/local/lib64"
-    "$HOME/local/lib"
-    "$HOME/local/gcc-11.3/lib64"
+    # "$HOME/local/lib64"
+    # "$HOME/local/lib"
+    # "$HOME/local/gcc-11.3/lib64"
 )
 
 # Add library paths
@@ -66,3 +68,5 @@ if [ -n "$BASH_VERSION" ]; then
         . "$HOME/.bashrc"
     fi
 fi
+
+. "$HOME/.local/bin/env"
