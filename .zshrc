@@ -57,4 +57,8 @@ fi
 
 # Auto-start X on tty1
 # [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ] && exec startx
+
+# Neovim
+export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+
 export DASHSCOPE_API_KEY=sk-9bb987192a624d20b71705b248b57f49
