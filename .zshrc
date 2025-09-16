@@ -4,6 +4,7 @@
 
 # Oh-My-Zsh
 export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME="robbyrussell"
 
 # Plugins (only if they exist)
 plugins=(git)
@@ -14,8 +15,8 @@ plugins=(git)
 
 # History configuration
 HISTFILE="$HOME/.zsh_history"
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=1000000
+SAVEHIST=1000000
 
 # Essential history options
 setopt EXTENDED_HISTORY
@@ -33,7 +34,7 @@ alias sz="source ~/.zshrc"
 
 # External tools (only if installed)
 command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
-command -v starship >/dev/null && eval "$(starship init zsh)"
+# command -v starship >/dev/null && eval "$(starship init zsh)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f "$HOME/.config/broot/launcher/bash/br" ] && source "$HOME/.config/broot/launcher/bash/br"
 
@@ -55,5 +56,5 @@ fi
 [ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
 
 # Auto-start X on tty1
-[ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ] && exec startx
+# [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ] && exec startx
 export DASHSCOPE_API_KEY=sk-9bb987192a624d20b71705b248b57f49
