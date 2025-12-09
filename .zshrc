@@ -45,5 +45,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 export PATH=/opt/nvim-linux-x86_64/bin:$PATH
+export PATH=/usr/local/texlive/2022/bin/x86_64-linux:$PATH
 
 export DASHSCOPE_API_KEY=sk-9bb987192a624d20b71705b248b57f49
