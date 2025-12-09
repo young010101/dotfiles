@@ -29,7 +29,7 @@ setopt HIST_IGNORE_SPACE
 [ -f "$HOME/.shell_common" ] && . "$HOME/.shell_common"
 
 # Basic aliases
-alias ez="vi ~/.zshrc"
+alias ez="hx ~/.zshrc"
 alias sz="source ~/.zshrc"
 
 # External tools (only if installed)
