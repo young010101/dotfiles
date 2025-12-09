@@ -41,17 +41,6 @@ command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
 # Homebrew
 [ -f "/home/linuxbrew/.linuxbrew/bin/brew" ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-# nnn file manager
-if command -v nnn >/dev/null; then
-    [ -f ~/.config/nnn/nnn.conf ] && source ~/.config/nnn/nnn.conf
-    n() {
-        [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ] && echo "nnn is already running" && return
-        export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
-        nnn "$@"
-        [ -f "$NNN_TMPFILE" ] && . "$NNN_TMPFILE" && rm -f "$NNN_TMPFILE" > /dev/null
-    }
-fi
-
 # Local environment
 [ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
 
