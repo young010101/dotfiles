@@ -37,11 +37,7 @@ command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
 # command -v starship >/dev/null && eval "$(starship init zsh)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f "$HOME/.config/broot/launcher/bash/br" ] && source "$HOME/.config/broot/launcher/bash/br"
-
-# Homebrew
 [ -f "/home/linuxbrew/.linuxbrew/bin/brew" ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
-# Local environment
 [ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
 
 # Auto-start X on tty1
