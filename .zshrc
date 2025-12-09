@@ -35,6 +35,8 @@ alias sz="source ~/.zshrc"
 # External tools (only if installed)
 command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
 # command -v starship >/dev/null && eval "$(starship init zsh)"
+eval "$(atuin init zsh)"
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f "$HOME/.config/broot/launcher/bash/br" ] && source "$HOME/.config/broot/launcher/bash/br"
 [ -f "/home/linuxbrew/.linuxbrew/bin/brew" ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
