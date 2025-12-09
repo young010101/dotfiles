@@ -47,4 +47,9 @@ export NVM_DIR="$HOME/.nvm"
 export PATH=/opt/nvim-linux-x86_64/bin:$PATH
 export PATH=/usr/local/texlive/2022/bin/x86_64-linux:$PATH
 
+# bart
+export BART_TOOLBOX_PATH=/home/cyang/repos/bart
+export PATH=$BART_TOOLBOX_PATH:$PATH
+export PATH=/home/cyang/repos/view:$PATH
+
 export DASHSCOPE_API_KEY=sk-9bb987192a624d20b71705b248b57f49
