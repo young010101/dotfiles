@@ -40,10 +40,6 @@ command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
 [ -f "/home/linuxbrew/.linuxbrew/bin/brew" ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 [ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
 
-# Auto-start X on tty1
-# [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ] && exec startx
-
-# Neovim
-export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+export PATH=/opt/nvim-linux-x86_64/bin:$PATH
 
 export DASHSCOPE_API_KEY=sk-9bb987192a624d20b71705b248b57f49
