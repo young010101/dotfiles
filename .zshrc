@@ -56,3 +56,10 @@ export PATH=$BART_TOOLBOX_PATH:$PATH
 export PATH=/home/cyang/repos/view:$PATH
 
 export DASHSCOPE_API_KEY=sk-9bb987192a624d20b71705b248b57f49
+
+# bun completions
+[ -s "/home/cyang/.bun/_bun" ] && source "/home/cyang/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
