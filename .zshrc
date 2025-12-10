@@ -48,7 +48,7 @@ export NVM_DIR="$HOME/.nvm"
 
 export PATH=/opt/nvim-linux-x86_64/bin:$PATH
 export PATH=/usr/local/texlive/2022/bin/x86_64-linux:$PATH
-# export PATH=$PATH:$(go env GOPATH)/bin  # !! already in $PATH !
+export PATH=$(go env GOPATH)/bin:$PATH
 
 # bart
 export BART_TOOLBOX_PATH=/home/cyang/repos/bart
